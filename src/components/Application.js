@@ -1,6 +1,67 @@
 import React, { useState } from "react";
 import { DayList } from './DayList'
 import "components/Application.scss";
+import { Appointment } from './Appointment';
+
+const appointments = [
+  {
+    id: 1,
+    time: "6am",
+    interview: {
+      student: "Chandler Bing",
+      interviewer: {
+        id: 1,
+        name: "Sylvia Palmer",
+        avatar: "https://i.imgur.com/LpaY82x.png",
+      }
+    }
+  },
+  {
+    id: 2,
+    time: "7am",
+    interview: {
+      student: "Phoebe Buffay",
+      interviewer: {
+        id: 1,
+        name: "Mike Wozowski",
+        avatar: "https://i.imgur.com/LpaY82x.png",
+      }
+    }
+  },
+  {
+    id: 2,
+    time: "8am",
+  },
+    {
+    id: 1,
+    time: "9am",
+    interview: {
+      student: "Rachel Greene",
+      interviewer: {
+        id: 1,
+        name: "Sylvia Palmer",
+        avatar: "https://i.imgur.com/LpaY82x.png",
+      }
+    }
+  },
+  {
+    id: 2,
+    time: "12pm",
+    interview: {
+      student: "Ross Geller",
+      interviewer: {
+        id: 1,
+        name: "Mike Wozowski",
+        avatar: "https://i.imgur.com/LpaY82x.png",
+      }
+    }
+  },
+  {
+    id: 2,
+    time: "3pm"
+  },
+];
+
 
 const days = [
   {
@@ -23,6 +84,13 @@ const days = [
 export default function Application(props) {
 
   const [day, setDay] = useState('Monday');
+
+  const appointmentList = appointments.map((appoint, index) => {
+    return (
+      <Appointment key={appoint.id} {...appoint} />
+    )
+  })
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -48,6 +116,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
+        {appointmentList}
       </section>
     </main>
   );

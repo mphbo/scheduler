@@ -12,13 +12,13 @@ export const InterviewerList = props => {
         name={int.name}
         avatar={int.avatar}
         selected={int.id === value}
-        setInterviewer={(event) => onChange(int.it)}
+        onChange={() => onChange(int.id)}
         />
     )
   })
   return (
     <section className="interviewers">
-      <h4 className="interviewers__header text--light"></h4>
+      <h4 className="interviewers__header text--light">Interviewers</h4>
       <ul className="interviewers__list">{interviewerList}</ul>
     </section>
   )
