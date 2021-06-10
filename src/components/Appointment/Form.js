@@ -14,6 +14,8 @@ export const Form = (props) => {
   // const onSave = (nameOfStudent, interviewerId) => {
   //   return [nameOfStudent, interviewerId];
   // }
+
+
   
   return (
     <main className="appointment__card appointment__card--create">
@@ -40,7 +42,7 @@ export const Form = (props) => {
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button onClick={reset}  danger>Cancel</Button>
-          <Button onClick={onSave} confirm>Save</Button>
+          <Button onClick={() => onSave(name, interviewer)} confirm>Save</Button>
         </section>
       </section>
     </main>
