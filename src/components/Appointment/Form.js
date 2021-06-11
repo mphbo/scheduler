@@ -11,11 +11,6 @@ export const Form = (props) => {
     setInterviewer(null);
     onCancel();
   }
-  // const onSave = (nameOfStudent, interviewerId) => {
-  //   return [nameOfStudent, interviewerId];
-  // }
-
-
   
   return (
     <main className="appointment__card appointment__card--create">

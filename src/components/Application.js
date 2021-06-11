@@ -89,7 +89,7 @@ export default function Application(props) {
 
   const bookInterview = (id, interview) => {
     
-    console.log('HELP:', id, interview);
+    // console.log('HELP:', id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview}
@@ -104,14 +104,11 @@ export default function Application(props) {
       ...appointment
     })
     .then((response) => {
-      // console.log('response::',response);
-      // setState({...state})
-      // console.log('this has returned true')
-      // return true;
-      
-      
       setState({...state, appointments})
       return true;
+    })
+    .catch((e) => {
+      return 'error';
     })
   }
 
@@ -133,7 +130,9 @@ export default function Application(props) {
       setState({...state, appointments})
       return true;
     })
-    .catch(e => console.log('e:', e))
+    .catch(e =>  {
+      return 'error' 
+    })
   }
 
 
