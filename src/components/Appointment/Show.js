@@ -1,7 +1,7 @@
 import React from "react";
 
 export const Show = (props) => {
-  const { onDelete, onEdit, interviewer, student } = props;
+  const { onConfirm, onEdit, interviewer, student } = props;
 
   return (
     <main className="appointment__card appointment__card--show">
@@ -9,7 +9,7 @@ export const Show = (props) => {
         <h2 className="text--regular">{student}</h2>
         <section className="interviewer">
           <h4 className="text--light">interviewer</h4>
-          <h3 className="text--regular">{interviewer}</h3>
+          <h3 className="text--regular">{interviewer.name}</h3>
         </section>
       </section>
       <section className="appointment__card-right">
@@ -24,7 +24,7 @@ export const Show = (props) => {
             className="appointment__actions-button"
             src="images/trash.png"
             alt="Delete"
-            onClick={onDelete}
+            onClick={onConfirm}
           />
         </section>
       </section>

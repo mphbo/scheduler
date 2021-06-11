@@ -74,9 +74,10 @@ export default function Application(props) {
     day: 'Monday',
     days: [],
     appointments: {},
-    interviewers: {}
+    interviewers: {},
+    isLoading: false
   });
-  console.log('state.interviewers:', state.interviewers);
+  // console.log('state.interviewers:', state.interviewers);
 
   
   const setDay = day => setState({ ...state, day });
@@ -85,9 +86,55 @@ export default function Application(props) {
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
 
+
   const bookInterview = (id, interview) => {
-  console.log('HELP:', id, interview);
-}
+    
+    console.log('HELP:', id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview}
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    
+    console.log('appointment:', appointment);
+    return axios.put(`/api/appointments/${appointment.id}`, {
+      ...appointment
+    })
+    .then((response) => {
+      // console.log('response::',response);
+      // setState({...state})
+      // console.log('this has returned true')
+      // return true;
+      
+      
+      setState({...state, appointments})
+      return true;
+    })
+  }
+
+  const cancelInterview = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    }
+    console.log({ id: appointment.id,
+      time: appointment.time,
+      interview: null})
+    return axios.delete(`/api/appointments/${id}`)
+    .then((response) => {
+      console.log('HELP')
+      setState({...state, appointments})
+      return true;
+    })
+    .catch(e => console.log('e:', e))
+  }
 
 
    useEffect(() => {
@@ -111,6 +158,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     )
   })

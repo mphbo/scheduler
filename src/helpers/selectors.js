@@ -3,7 +3,7 @@ export const getAppointmentsForDay = (state, day) => {
     return d.name === day;
   });
   if (!day || !dayObject[0] || !state) {
-    console.log([]);
+    // console.log([]);
     return [];
   }
 
@@ -49,7 +49,7 @@ export const getInterviewersForDay = (state, day) => {
     return d.name === day;
   });
   if (!day || !dayObject[0] || !state) {
-    console.log([]);
+    // console.log([]);
     return [];
   }
 
