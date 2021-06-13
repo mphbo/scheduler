@@ -40,16 +40,26 @@ export const useApplicationDataWithReducerHook = (initial) => {
   useEffect(() => {
 
 
-    // const socket = new WebSocket("ws://localhost:8001");
-    // socket.onopen = (event) => {
-    //   socket.send('ping');
-    //   // socket.send('Heyyyyy');
+    const socket = new WebSocket("ws://localhost:8001");
+    socket.onopen = (event) => {
+      socket.send('ping');
+      // socket.send('Heyyyyy');
       
-    // }
+    }
     
-    // socket.onmessage = (event) => {
-    //   console.log('Message Recieved:', event.data);
-    // }
+    socket.onmessage = (event) => {
+      console.log('Message Recieved:', (event));
+
+
+      if (event.type === 'SET_INTERVIEW') {
+        dispatch({
+          type: SET_INTERVIEW,
+          appointments: null
+        })
+      }
+
+
+    }
 
 
 
