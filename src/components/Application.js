@@ -3,7 +3,7 @@ import { DayList } from './DayList'
 import "components/Application.scss";
 import { Appointment } from './Appointment';
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from '../helpers/selectors';
-import { useApplicationDataWithReducerHook } from "hooks/useApplicationDataWithReducerHookAndWebSocket";
+import { useApplicationDataWithReducerHook } from "hooks/useApplicationDataWithReducerHook";
 
 
 export default function Application(props) {

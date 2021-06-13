@@ -38,31 +38,6 @@ export const useApplicationDataWithReducerHook = (initial) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-
-
-    const socket = new WebSocket("ws://localhost:8001");
-    socket.onopen = (event) => {
-      socket.send('ping');
-      // socket.send('Heyyyyy');
-      
-    }
-    
-    socket.onmessage = (event) => {
-      console.log('Message Recieved:', (event));
-
-
-      if (event.type === 'SET_INTERVIEW') {
-        dispatch({
-          type: SET_INTERVIEW,
-          appointments: null
-        })
-      }
-
-
-    }
-
-
-
     Promise.all([
       axios.get("/api/days"),
       axios.get("/api/appointments"),
@@ -75,6 +50,32 @@ export const useApplicationDataWithReducerHook = (initial) => {
           appointments: all[1].data,
           interviewers: all[2].data,
         });
+      }).then((response) => {
+
+
+        const socket = new WebSocket("ws://localhost:8001");
+        socket.onopen = (event) => {
+          socket.send("ping");
+          // socket.send('Heyyyyy');
+        };
+
+        socket.onmessage = (event) => {
+          console.log("Message Recieved:", event);
+          const appointment = JSON.parse(event.data);
+
+          if (appointment.type === "SET_INTERVIEW") {
+            console.log("parsed:", appointment);
+
+            const appointments = { ...state.appointments, appointment };
+
+            dispatch({
+              type: SET_INTERVIEW,
+              appointments,
+            });
+          }
+        };
+
+
       })
       .catch((e) => console.log(e));
   }, []);
@@ -125,7 +126,6 @@ export const useApplicationDataWithReducerHook = (initial) => {
     };
 
     const days = state.days.map((day) => {
-
       if (state.day === day.name) {
         day.spots = day.spots + 1;
       }

@@ -86,7 +86,8 @@ export const Appointment = (props) => {
       {mode === ERROR_DELETE && <Error message='Could not Delete!' onClose={close} />}
       
      
-      {mode === SHOW && (   <Show
+      {mode === SHOW && interview && (   
+        <Show
           student={interview.student}
           interviewer={interview.interviewer}
           // onEdit={onEdit}
