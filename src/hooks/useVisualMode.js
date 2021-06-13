@@ -11,13 +11,15 @@ export const useVisualMode = (initial) => {
     } 
     else {
       setHistory(prev => [...prev, newMode]);
-      console.log(history);
+      console.log('history',history);
     }
   }
 
   const back = () => {
+    
     if (history.length > 1) {
-      setHistory(prev => [...prev, mode])
+      setHistory(prev => [...prev.slice(0, -1)])
+      console.log(history);
       setMode(history[history.length - 2]);
 
     }

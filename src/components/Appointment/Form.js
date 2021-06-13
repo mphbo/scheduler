@@ -6,11 +6,15 @@ export const Form = (props) => {
   const [name, setName] = useState(props.name || '');
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const { interviewers, onSave, onCancel } = props;
+  
+  
   const reset = () => {
     setName('');
     setInterviewer(null);
     onCancel();
   }
+
+
   
   return (
     <main className="appointment__card appointment__card--create">
@@ -36,8 +40,10 @@ export const Form = (props) => {
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <Button onClick={reset}  danger>Cancel</Button>
-          <Button onClick={() => onSave(name, interviewer)} confirm>Save</Button>
+          <Button onClick={onCancel}  danger>Cancel</Button>
+          {(!interviewer || !name) && <Button confirm>Save</Button>}
+          {/* {!name && <Button>Save</Button>} */}
+          {interviewer && name && <Button onClick={() => { onSave(name, interviewer)}} confirm>Save</Button>}
         </section>
       </section>
     </main>

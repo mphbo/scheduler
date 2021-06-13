@@ -1,10 +1,12 @@
 import React from 'react';
 import DayListItem from './DayListItem';
+import { useApplicationData } from 'hooks/useApplicationData';
 
 export const DayList = props => {
+  
   const { days, day, setDay } = props;
-  console.log('days:',days);
   const dayList = days.map((d) => {
+
       return ( 
         <DayListItem 
           name={d.name}
