@@ -1,6 +1,7 @@
 import React from 'react';
 import { InterviewerListItem } from './InterviewerListItem';
 import './InterviewerList.scss';
+import PropTypes from 'prop-types';
 
 export const InterviewerList = props => {
   const { interviewers, value, onChange } = props;
@@ -22,4 +23,8 @@ export const InterviewerList = props => {
       <ul className="interviewers__list">{interviewerList}</ul>
     </section>
   )
+}
+
+InterviewerList.propTypes = {
+  interviewers: PropTypes.array.isRequired
 }
