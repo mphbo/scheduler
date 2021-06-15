@@ -60,7 +60,7 @@ export default function Application(props) {
       <section className="schedule">
         {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
         {appointmentList}
-        <Appointment />
+        <Appointment time='5pm' />
       </section>
     </main>
   );

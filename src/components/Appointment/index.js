@@ -3,6 +3,7 @@ import "./styles.scss";
 // import { Header } from "./Header";
 import { Empty } from "./Empty";
 import { Show } from "./Show";
+import { Header } from "./Header";
 // import { Confirm } from "./Confirm";
 import { Form } from "./Form";
 import { Status } from './Status';
@@ -11,7 +12,7 @@ import { useVisualMode } from "../../hooks/useVisualMode";
 import { Error } from './Error';
 
 export const Appointment = (props) => {
-  const { interview, interviewers, bookInterview, id, cancelInterview } = props;
+  const { interview, interviewers, bookInterview, id, cancelInterview, time } = props;
 
   
   const EDIT = 'EDIT';
@@ -34,7 +35,23 @@ export const Appointment = (props) => {
       interviewer,
     };
     transition(SAVING, true);
-    bookInterview(id, interview)
+    bookInterview(id, interview, false)
+    .then((response) => {
+      if (response !== 'error') {
+        transition(SHOW);
+      } else {
+        transition(ERROR_SAVE, true);
+      }
+    });
+  };
+
+  const editSave = (name, interviewer) => {
+    const interview = {
+      student: name,
+      interviewer,
+    };
+    transition(SAVING, true);
+    bookInterview(id, interview, true)
     .then((response) => {
       if (response !== 'error') {
         transition(SHOW);
@@ -76,11 +93,12 @@ export const Appointment = (props) => {
 
 
   return (
-    <article className="appointment">
+    <article className="appointment" data-testid='appointment'>
       
+      <Header time={time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SAVING && <Status message='Saving' />}
-      {mode === CONFIRM && <Confirm message='Confirm' onConfirm={deleteInterview} onCancel={back} />}
+      {mode === CONFIRM && <Confirm message='Are you sure you would like to delete?' onConfirm={deleteInterview} onCancel={back} />}
       {mode === DELETING && <Status message='Deleting' />}
       {mode === ERROR_SAVE && <Error message='Could not Save!' onClose={close} />}
       {mode === ERROR_DELETE && <Error message='Could not Delete!' onClose={close} />}
@@ -106,7 +124,7 @@ export const Appointment = (props) => {
         <Form
           interviewers={interviewers}
           onCancel={back}
-          onSave={save}
+          onSave={editSave}
           editMode={true}
           name={interview.student}
           interviewer={interview.interviewer.id}

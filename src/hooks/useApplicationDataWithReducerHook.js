@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
+import { updateSpots } from '../helpers/updateSpots';
 
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
@@ -71,8 +72,8 @@ export const useApplicationDataWithReducerHook = (initial) => {
 
   const setDay = (day) => dispatch({ type: SET_DAY, day });
 
-  const bookInterview = (id, interview) => {
-    // console.log('HELP:', id, interview);
+  const bookInterview = (id, interview, edit) => {
+    console.log('HELP:', edit);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -83,10 +84,15 @@ export const useApplicationDataWithReducerHook = (initial) => {
     };
 
     const days = state.days.map((day) => {
-      // const spots = updateSpots(x, y, z)
+      // const spots = updateSpots(state.day, state.days, )
 
       if (state.day === day.name) {
-        day.spots = day.spots - 1;
+        if (edit) {
+          day.spots = day.spots;
+        }
+        if (!edit) {
+          day.spots = day.spots - 1;
+        }
       }
       return day;
     });
