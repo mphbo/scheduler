@@ -33,29 +33,23 @@ const state = {
   },
 };
 
-const updateSpots = function (dayName, days, appointments) {
-
-  let theDay = '';
-  for (const day of days) {
-    if (day.name === dayName) {
-      theDay = day;
+export const getSpotsForDay = (dayObject, appointments) => {
+  let spots = 0;
+  for (const id of dayObject.appointments) {
+    const appointment = appointments[id];
+    if (!appointment.interview) {
+      spots++;
     }
   }
-  let count = 0;
+  return spots;
+}
 
-  for (const app of theDay.appointments) {
-    if (appointments[app].interview === null) {
-      count++;
-    }
-  }
-// console.log('theday:', count);
-    // for(const app of day.appointments) {
-    //   if (appointments[app].interview === null) {
-    //     count++;
-    //   }
-    // }
-    return count;
-
+export const updateSpots = function (dayName, days, appointments) {
+  const dayObj = days.find(day => day.name === dayName);
+  const spots = getSpotsForDay(dayObj, appointments);
+  const newDay = {...dayObj, spots};
+  const newDays = days.map(day => day.name === dayName ? newDay : day);
+  return newDays;
 };
 
 // This is the initial state

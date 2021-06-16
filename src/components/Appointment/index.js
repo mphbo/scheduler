@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./styles.scss";
 // import { Header } from "./Header";
 import { Empty } from "./Empty";
@@ -90,6 +90,15 @@ export const Appointment = (props) => {
   const edit = () => {
     transition(EDIT);
   }
+
+  useEffect(() => {
+    if (interview && mode === EMPTY) {
+      transition(SHOW);
+    }
+    if (interview === null && mode === SHOW) {
+      transition(EMPTY);
+    }
+  }, [interview, transition, mode]);
 
 
   return (
