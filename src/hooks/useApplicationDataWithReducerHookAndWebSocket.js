@@ -2,8 +2,6 @@ import { useEffect, useReducer } from "react";
 import axios from "axios";
 
 
-//adddddded comment to trigger commit for testing
-
 const SET_DAY = "SET_DAY";
 const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
 const SET_INTERVIEW = "SET_INTERVIEW";
