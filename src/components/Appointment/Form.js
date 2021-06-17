@@ -20,7 +20,7 @@ export const Form = (props) => {
       setError('Student name cannot be blank');
       return;
     }
-    if (!interviewer) {
+    if (interviewer === null) {
       setError('Please pick an interviewer');
       return;
     }
