@@ -1,32 +1,47 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 import { updateSpots } from "helpers/updateSpots";
+import { reducer, SET_APPLICATION_DATA, SET_DAY, SET_INTERVIEW } from '../reducers/reducer';
 
-const SET_DAY = "SET_DAY";
-const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-const SET_INTERVIEW = "SET_INTERVIEW";
+// const SET_DAY = "SET_DAY";
+// const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+// const SET_INTERVIEW = "SET_INTERVIEW";
 
-const reducer = (state, action) => {
-  console.log("action:", action);
-  switch (action.type) {
-    case SET_DAY:
-      return { ...state, day: action.day };
-    case SET_APPLICATION_DATA:
-      return {
-        ...state,
-        days: action.days,
-        appointments: action.appointments,
-        interviewers: action.interviewers,
-      };
-    case SET_INTERVIEW: {
-      return { ...state, appointments: action.appointments, days: action.days };
-    }
-    default:
-      throw new Error(
-        `Tried to reduce with unsupported action type: ${action.type}`
-      );
-  }
-};
+
+// //reducer function for useReducer hook
+
+// const reducer = (state, action) => {
+//   console.log("action:", action);
+//   switch (action.type) {
+//     case SET_DAY:
+//       return { ...state, day: action.day };
+//     case SET_APPLICATION_DATA:
+//       return {
+//         ...state,
+//         days: action.days,
+//         appointments: action.appointments,
+//         interviewers: action.interviewers,
+//       };
+//     case SET_INTERVIEW: {
+//       console.log('state1234:', state, 'appointment:', action.appointment);
+
+//       //function imported to create a new days array with updated spots numbers to be rendered in the days list
+//       const days = updateSpots(state.day, state.days, {...state.appointments, [action.appointment.id]: action.appointment});
+
+//       return {
+//         ...state, 
+//         appointments: {...state.appointments, [action.appointment.id]: {...action.appointment, time: action.time}}, 
+//         days 
+//       }
+//     }
+//     default:
+//       throw new Error(
+//         `Tried to reduce with unsupported action type: ${action.type}`
+//       );
+//   }
+// };
+
+//initial state for reducer (cannot miss any states otherwise crash)
 const initialState = {
   day: "Monday",
   days: [],
@@ -35,9 +50,12 @@ const initialState = {
   spots: null,
 };
 
+
+//there are three hooks in this folder, this is the final one, others are included to remind myself how I implemented each stretch feature (useReducer, webSockets)
 export const useApplicationDataWithReducerHook = (initial) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  //useEffect is called for first page load
   useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
@@ -57,18 +75,18 @@ export const useApplicationDataWithReducerHook = (initial) => {
         }
       })
       .then((response) => {
-        const socket = new WebSocket("ws://localhost:8001");
+
+        //after page rendered a websocket is created to send messages to render create/delete appointments on everyones screen that is connected without a page reload
+        const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
         socket.onopen = (event) => {
           socket.send("ping");
           // socket.send('Heyyyyy');
         };
         socket.onmessage = (event) => {
-          console.log("Message Recieved:", event.data);
           const appointment = JSON.parse(event.data);
 
           if (appointment.type === "SET_INTERVIEW") {
-            console.log("parsed:", appointment);
-
+            
             const appointments = {
               ...response.appointments,
               [appointment.id]: {
@@ -76,24 +94,28 @@ export const useApplicationDataWithReducerHook = (initial) => {
                 ...appointment
               },
             };
-            console.log('day:', state.day, 'days:', response.days, 'appointments:', appointments)
-            const days = updateSpots(state.day, response.days, appointments);
 
             dispatch({
               type: SET_INTERVIEW,
-              appointments,
-              days: days,
+              appointment,
+              time: response.appointments[appointment.id].time
             });
+            socket.send(appointment);
           }
         };
       })
       .catch((e) => console.log(e));
   }, []);
 
+  
+  //setDay function to be exported to allow application to change day-state
   const setDay = (day) => dispatch({ type: SET_DAY, day });
 
+
+  //a lot happens here and I need to break this function out of this file when I get a chance to make my code more modular
+
+  //This is a function that when called instigates an axios request sending an interview to the api server and changing state to rerender
   const bookInterview = (id, interview) => {
-    // console.log('HELP:', id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -109,7 +131,7 @@ export const useApplicationDataWithReducerHook = (initial) => {
       })
       .then((response) => {
         const days = updateSpots(state.day, state.days, appointments);
-        dispatch({ type: SET_INTERVIEW, appointments, days });
+        dispatch({ type: SET_INTERVIEW, appointment, days, time: appointment.time });
         return true;
       })
       .catch((e) => {
@@ -117,6 +139,7 @@ export const useApplicationDataWithReducerHook = (initial) => {
       });
   };
 
+  //Similar to bookInterview except we are sending a delete request via axios to the api server to get rid of an interview for a given appointment slot
   const cancelInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
@@ -127,18 +150,11 @@ export const useApplicationDataWithReducerHook = (initial) => {
       [id]: appointment,
     };
 
-    // const days = state.days.map((day) => {
-    //   if (state.day === day.name) {
-    //     day.spots = day.spots + 1;
-    //   }
-    //   return day;
-    // });
-
     return axios
       .delete(`/api/appointments/${id}`)
       .then((response) => {
         const days = updateSpots(state.day, state.days, appointments);
-        dispatch({ type: SET_INTERVIEW, appointments, days });
+        dispatch({ type: SET_INTERVIEW, appointment, days, time: appointment.time });
         return true;
       })
       .catch((e) => {
@@ -146,6 +162,7 @@ export const useApplicationDataWithReducerHook = (initial) => {
       });
   };
 
+  //Object is returned to be exported and used in Application
   return {
     state,
     bookInterview,

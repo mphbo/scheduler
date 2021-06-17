@@ -18,6 +18,7 @@ export default function Application(props) {
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
   
+  //map over the dailyAppointments and render for the chosen day
   const appointmentList = dailyAppointments.map((appoint) => {
     const interview = getInterview(state, appoint.interview);
     
@@ -58,7 +59,6 @@ export default function Application(props) {
 
       </section>
       <section className="schedule">
-        {/* Replace this with the schedule elements durint the "The Scheduler" activity. */}
         {appointmentList}
         <Appointment time='5pm' />
       </section>

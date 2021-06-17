@@ -11,6 +11,10 @@ const initialState = {
   spots: null,
 };
 
+
+//IMPORTANT, This file was kept to explain to myself in the future how I went from using HTTP to using webSockets, please refer to useApplicationDataWithReducerHookAndWebSocket for actual custom hook
+
+
 export const useApplicationDataWithReducerHook = (initial) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 

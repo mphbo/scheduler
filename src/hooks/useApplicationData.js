@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 // import { getInterviewersForDay } from "helpers/selectors";
 
+
+
+
+//IMPORTANT, this hook was kept in repo as a guide to remember how I went from useState to useReducer!! please refer to useApplicationDataWithReducerHookAndWebSocket for actual custom hook
+
+
+
 export const useApplicationData = (initial) => {
   const [state, setState] = useState({
     day: "Monday",

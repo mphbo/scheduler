@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import "./styles.scss";
-// import { Header } from "./Header";
 import { Empty } from "./Empty";
 import { Show } from "./Show";
 import { Header } from "./Header";
-// import { Confirm } from "./Confirm";
 import { Form } from "./Form";
 import { Status } from './Status';
 import { Confirm } from './Confirm';
@@ -15,6 +13,7 @@ export const Appointment = (props) => {
   const { interview, interviewers, bookInterview, id, cancelInterview, time } = props;
 
   
+  //Different modes or views to render conditionally
   const EDIT = 'EDIT';
   const SHOW = "SHOW";
   const EMPTY = "EMPTY";
@@ -44,23 +43,6 @@ export const Appointment = (props) => {
       }
     });
   };
-
-  const editSave = (name, interviewer) => {
-    const interview = {
-      student: name,
-      interviewer,
-    };
-    transition(SAVING, true);
-    bookInterview(id, interview, true)
-    .then((response) => {
-      if (response !== 'error') {
-        transition(SHOW);
-      } else {
-        transition(ERROR_SAVE, true);
-      }
-    });
-  };
-
   
 
   const confirm = () => {
@@ -133,7 +115,7 @@ export const Appointment = (props) => {
         <Form
           interviewers={interviewers}
           onCancel={back}
-          onSave={editSave}
+          onSave={save}
           editMode={true}
           name={interview.student}
           interviewer={interview.interviewer.id}

@@ -3,16 +3,13 @@ export const getAppointmentsForDay = (state, day) => {
     return d.name === day;
   });
   if (!day || !dayObject[0] || !state) {
-    // console.log([]);
     return [];
   }
 
   const appArr = dayObject[0].appointments.map((app) => {
     return state.appointments[app];
   });
-  // console.log(dayObject[0].appointments);
-  // console.log(state);
-  // console.log(appArr);
+
 
   console.log(appArr);
   return appArr;
@@ -49,17 +46,12 @@ export const getInterviewersForDay = (state, day) => {
     return d.name === day;
   });
   if (!day || !dayObject[0] || !state) {
-    // console.log([]);
     return [];
   }
 
   const intArr = dayObject[0].interviewers.map((int) => {
     return state.interviewers[int];
   });
-  // console.log(dayObject[0].appointments);
-  // console.log(state);
-  // console.log(appArr);
 
-  console.log(intArr);
   return intArr;
 };

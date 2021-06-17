@@ -1,6 +1,5 @@
 import React from 'react';
 import DayListItem from './DayListItem';
-import { useApplicationData } from 'hooks/useApplicationData';
 
 export const DayList = props => {
   
