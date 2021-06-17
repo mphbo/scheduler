@@ -4,6 +4,17 @@ Interview Scheduler is a single page application that allows users to create, ed
 
 ## Screenshots
 
+### Hovering on appointment
+!["Hovering on appointment"](https://raw.githubusercontent.com/mphbo/scheduler/master/docs/schedulerHover.png)
+
+### Editing or creating appointment
+!["Editing or deleting appointment"](https://raw.githubusercontent.com/mphbo/scheduler/master/docs/schedulerEdit.png)
+
+### Confirm message before deletion
+!["Confirm message before deletion](https://raw.githubusercontent.com/mphbo/scheduler/master/docs/schedulerConfirm.png)
+
+### Spinning delete indicator
+!["Spinning delete indicator](https://raw.githubusercontent.com/mphbo/scheduler/master/docs/schedulerDeleting.png)
 
 
 ## Setup
@@ -27,3 +38,11 @@ npm test
 ```sh
 npm run storybook
 ```
+
+##Extra Features
+
+* Implemented the useReducer hook as opposed to useState.
+
+* Used a webSocket to allow users to stay connected to eachother and see messages displayed in real time.
+
+* Used CircleCI, Netlify and Heroku to automate a lot of the production and testing process.
