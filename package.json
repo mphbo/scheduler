@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@testing-library/react-hooks": "^7.0.0",
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "normalize.css": "^8.0.1",
@@ -56,7 +57,7 @@
       "!src/index.js",
       "!src/hooks/useApplicationData.js",
       "!src/hooks/useApplicationDataWithReducerHookAndWebSocket.js"
-      ]
+    ]
   },
   "proxy": "http://localhost:8001"
 }
